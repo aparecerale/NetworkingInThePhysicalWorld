@@ -65,40 +65,45 @@ void loop() {
     stateButton2 = digitalRead(pushButton2); //read the state of the button
     if(stateButton2 == 0){
       while ( kick == 0) {
-        t = millis() + interval;
-        //Serial.println(t);
-        digitalWrite(LEDR,HIGH);
-        digitalWrite(LEDY,LOW);
-        digitalWrite(LEDG,LOW);
-        while ( millis()<t) {
-          if(digitalRead(pushButton2) == 1) {
-            kick = 1;
-            //break;
+        if ((count == 0) && (kick == 0 )) {
+          t = millis() + interval;
+          digitalWrite(LEDR,HIGH);
+          digitalWrite(LEDY,LOW);
+          digitalWrite(LEDG,LOW);
+          count = 1;
+          while ( millis()<t) {
+            if(digitalRead(pushButton2) == 1) {
+              kick = 1;
+              
+            }
           }
         }
-        digitalWrite(LEDR,LOW);
-        digitalWrite(LEDY,HIGH);
-        t = millis() + interval;
-        while ( millis()<t) {
-          if(digitalRead(pushButton2) == 1) {
-            kick = 1;
-            //break;
+        else if ((count == 1) && (kick == 0)) {
+          t = millis() + interval;
+          digitalWrite(LEDR,LOW);
+          digitalWrite(LEDY,HIGH);
+          count = 2;
+          while ( millis()<t) {
+            if(digitalRead(pushButton2) == 1) {
+             kick = 1;
+              
+            }
           }
         }
-        digitalWrite(LEDY,LOW);
-        digitalWrite(LEDG,HIGH);
-        delay(1000); 
-        while ( millis()<t) {
-          if(digitalRead(pushButton2) == 1) {
-            kick = 1;
-            //break;
+        if ((count == 2) && (kick==0)) {
+          t = millis() + interval;
+          digitalWrite(LEDY,LOW);
+          digitalWrite(LEDG,HIGH);
+          count = 0;
+          while ( millis()<t) {
+            if(digitalRead(pushButton2) == 1) {
+              kick = 1;
+              
+            }
           }
         }
-        
       }
     }
   }
-  //Serial.println(kick);
-  //Serial.println(count);
   
 }
